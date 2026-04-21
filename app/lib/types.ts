@@ -34,7 +34,7 @@ export type CollectionResult = {
 };
 
 export type MuseumObject = {
-    "objectID": string,
+    "objectID": number,
     "isHighlight": boolean,
     "accessionNumber": string,
     "accessionYear": string,
