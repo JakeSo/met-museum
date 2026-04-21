@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { fetchDepartments } from '@/app/lib/data'
+import { fetchDepartments } from '@/lib/data'
 import {
   Combobox,
   ComboboxChip,
@@ -42,7 +42,7 @@ export default function DepartmentCombobox({ selectedDeptIds, setSelectedDeptIds
       value={departments.filter(d => selectedDeptIds.includes(d.departmentId))}
       onValueChange={handleValueChange}
     >
-      <ComboboxChips>
+      <ComboboxChips className="overflow-hidden">
         <ComboboxValue placeholder="Select departments...">
           {(values: Department[]) => (
             <>

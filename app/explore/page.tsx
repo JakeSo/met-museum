@@ -1,8 +1,8 @@
-import { search, fetchObject, type SearchOptions } from '@/app/lib/data'
+import { search, fetchObject, type SearchOptions } from '@/lib/data'
 import SearchBar from '@/components/SearchBar'
 import FlatGallery from '@/components/FlatGallery'
 import PaginationControls from '@/components/PaginationControls'
-import { MuseumObject } from '../lib/types'
+import { MuseumObject } from '../../lib/types'
 
 const PAGE_SIZE = 20
 const MAX_PAGES = 500

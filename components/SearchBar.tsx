@@ -3,7 +3,7 @@
 import React, { useState, useTransition } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Search } from 'lucide-react'
-import { type SearchOptions } from '@/app/lib/data'
+import { type SearchOptions } from '@/lib/data'
 import {
   InputGroup,
   InputGroupAddon,
@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Toggle } from '@/components/ui/toggle'
 import { Label } from '@/components/ui/label'
-import DepartmentCombobox from './DepartmentCombobox'
+import DepartmentCombobox from './ui/DepartmentCombobox'
 
 type SearchBarProps = {
   loading?: boolean
@@ -102,7 +102,7 @@ export default function SearchBar({ loading: _loading }: SearchBarProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-125 mx-auto space-y-3 border-b-2 pb-6">
+    <form onSubmit={handleSubmit} className="w-full max-w-150 mx-auto space-y-3 border-b-2 pb-6">
       <InputGroup>
         <InputGroupAddon align="inline-start">
           <Search className="size-4" />
@@ -120,9 +120,9 @@ export default function SearchBar({ loading: _loading }: SearchBarProps) {
         </InputGroupAddon>
       </InputGroup>
 
-      <div className="flex flex-wrap items-center gap-1.5">
-        <span id="search-scope-label" className="text-muted-foreground">Search in</span>
+      <div className="flex flex-col gap-2">
         <div role="group" aria-labelledby="search-scope-label" className="flex flex-wrap items-center gap-1.5">
+          <span id="search-scope-label" className="text-muted-foreground">Search in</span>
           {SCOPE_CHIPS.map(({ key, label }) => (
             <Chip
               key={key}
@@ -134,8 +134,8 @@ export default function SearchBar({ loading: _loading }: SearchBarProps) {
           ))}
         </div>
 
-        <span id="search-filter-label" className="text-muted-foreground ml-2">Filter</span>
         <div role="group" aria-labelledby="search-filter-label" className="flex flex-wrap items-center gap-1.5">
+          <span id="search-filter-label" className="text-muted-foreground">Filter</span>
           {FILTER_CHIPS.map(({ key, label }) => (
             <Chip
               key={key}
@@ -145,26 +145,25 @@ export default function SearchBar({ loading: _loading }: SearchBarProps) {
               {label}
             </Chip>
           ))}
-        </div>
-
-        <Chip
-          active={showAdvanced}
-          onClick={() => setShowAdvanced(v => !v)}
-        >
-          {showAdvanced ? 'Fewer filters' : 'More filters'}
-        </Chip>
-
-        {hasActiveFilters && (
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
+          <Chip
+            active={showAdvanced}
+            onClick={() => setShowAdvanced(v => !v)}
             className="ml-auto"
-            onClick={handleClear}
           >
-            Clear filters
-          </Button>
-        )}
+            {showAdvanced ? 'Fewer filters' : 'More filters'}
+          </Chip>
+
+          {hasActiveFilters && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleClear}
+            >
+              Clear filters
+            </Button>
+          )}
+        </div>
       </div>
 
       {showAdvanced && (

@@ -1,4 +1,4 @@
-import { search, fetchObject } from "./lib/data";
+import { search, fetchObject } from "../lib/data";
 import Masonry, { type MasonryItem } from "../components/Masonry";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

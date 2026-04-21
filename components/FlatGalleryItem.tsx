@@ -1,4 +1,4 @@
-import { MuseumObject } from "@/app/lib/types";
+import { MuseumObject } from "@/lib/types";
 import { Card, CardAction, CardTitle, CardDescription, CardHeader } from "./ui/card";
 import Image from "next/image";
 import { Badge } from "./ui/badge";

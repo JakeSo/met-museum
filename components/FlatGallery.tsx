@@ -1,4 +1,4 @@
-import { MuseumObject } from '@/app/lib/types'
+import { MuseumObject } from '@/lib/types'
 import FlatGalleryItem from './FlatGalleryItem'
 
 export default function FlatGallery({ artworks }: { artworks: MuseumObject[] }) {

@@ -1,5 +1,5 @@
-import { fetchObject } from '@/app/lib/data'
-import { MuseumObject } from '@/app/lib/types'
+import { fetchObject } from '@/lib/data'
+import { MuseumObject } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
