@@ -177,7 +177,7 @@ export default function Masonry({
           onClick={() => router.push(item.url)}
           onMouseEnter={() => handleMouseEnter(item)}
           onMouseLeave={() => handleMouseLeave(item)}
-          aria-label={`View artwork ${item.id}`}
+          aria-label={`View artwork ${item.title}`}
           style={{
             position: 'absolute',
             top: 0,

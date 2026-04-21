@@ -188,7 +188,7 @@ export default function SearchBar({ loading: _loading }: SearchBarProps) {
             />
           </Field>
           <Field label="Department" htmlFor="search-department">
-            <DepartmentCombobox selectedDeptIds={departmentIds} setSelectedDeptIds={setDepartmentIds} inputId="search-department" />
+            <DepartmentCombobox selectedDeptIds={departmentIds} setSelectedDeptIds={setDepartmentIds} />
           </Field>
           <Field label="Date from" htmlFor="search-date-begin">
             <Input

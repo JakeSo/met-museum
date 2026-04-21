@@ -22,10 +22,9 @@ type Department = {
 type DepartmentComboboxProps = {
   selectedDeptIds: number[]
   setSelectedDeptIds: (value: number[]) => void
-  inputId?: string
 }
 
-export default function DepartmentCombobox({ selectedDeptIds, setSelectedDeptIds, inputId }: DepartmentComboboxProps) {
+export default function DepartmentCombobox({ selectedDeptIds, setSelectedDeptIds }: DepartmentComboboxProps) {
   const [departments, setDepartments] = useState<Department[]>([])
 
   useEffect(() => {
