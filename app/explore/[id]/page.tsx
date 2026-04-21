@@ -60,7 +60,7 @@ export default async function DetailsPage({
                 width={1200}
                 height={1200}
                 sizes="(max-width: 1024px) 100vw, 65vw"
-                className="mx-auto max-h-[70vh] w-auto object-contain"
+                className="mx-auto min-h-[50vh] max-h-[70vh] w-auto object-contain"
                 priority
               />
             </div>
