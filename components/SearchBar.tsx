@@ -102,7 +102,7 @@ export default function SearchBar({ loading: _loading }: SearchBarProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-300 mx-auto space-y-3 border-b-2 pb-6">
+    <form onSubmit={handleSubmit} className="w-full max-w-125 mx-auto space-y-3 border-b-2 pb-6">
       <InputGroup>
         <InputGroupAddon align="inline-start">
           <Search className="size-4" />

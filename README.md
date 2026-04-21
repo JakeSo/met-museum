@@ -2,7 +2,7 @@
 
 A small Next.js app for exploring the Metropolitan Museum of Art's public collection. Built as a take-home for Endurance Warranty.
 
-**Live demo:** TBD
+**Live demo:** [https://met-explorer-orcin.vercel.app/]
 
 ## What it does
 
