@@ -1,4 +1,4 @@
-import { fetchObject } from '@/lib/data'
+import { fetchObject, NotFoundError } from '@/lib/data'
 import { MuseumObject } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -17,8 +17,9 @@ export default async function DetailsPage({
 
   try {
     artwork = await fetchObject(Number(id))
-  } catch {
-    notFound()
+  } catch (err) {
+    if (err instanceof NotFoundError) notFound()
+    throw err
   }
 
   const allImages = [
@@ -120,8 +121,8 @@ export default async function DetailsPage({
                 Constituents
               </p>
               <div className="space-y-3">
-                {artwork.constituents.map((constituent, index) => (
-                  <div key={`${constituent.constituentID}-${index}`} className="space-y-1">
+                {artwork.constituents.map((constituent) => (
+                  <div key={constituent.constituentID} className="space-y-1">
                     <p className="font-semibold">{constituent.name}</p>
                     <p className="text-sm text-muted-foreground">{constituent.role}</p>
                     <div className="flex flex-wrap gap-2 text-xs">

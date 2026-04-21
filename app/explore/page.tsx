@@ -1,8 +1,9 @@
-import { search, fetchObject, type SearchOptions } from '@/lib/data'
+import { search, fetchObject } from '@/lib/data'
+import { paramsToSearchOptions } from '@/lib/search-params'
 import SearchBar from '@/components/SearchBar'
 import FlatGallery from '@/components/FlatGallery'
 import PaginationControls from '@/components/PaginationControls'
-import { MuseumObject } from '../../lib/types'
+import { MuseumObject } from '@/lib/types'
 
 const PAGE_SIZE = 20
 const MAX_PAGES = 500
@@ -21,7 +22,6 @@ export default async function Page({
   const page = Math.max(1, parseInt(params.page ?? '1', 10))
 
   if (!q) {
-
     const highlights = await search('*', { isHighlight: true, hasImages: true })
     const highlightIDs = (highlights.objectIDs ?? []).slice(0, 40)
     const settled = await Promise.allSettled(highlightIDs.map(id => fetchObject(id)))
@@ -37,24 +37,7 @@ export default async function Page({
     )
   }
 
-  const options: SearchOptions = {}
-  if (params.isHighlight === 'true') options.isHighlight = true
-  if (params.title === 'true') options.title = true
-  if (params.tags === 'true') options.tags = true
-  if (params.isOnView === 'true') options.isOnView = true
-  if (params.artistOrCulture === 'true') options.artistOrCulture = true
-  if (params.hasImages === 'true') options.hasImages = true
-  if (params.departmentId)
-    options.departmentId = params.departmentId.split(',').map(Number).filter(Boolean)
-  if (params.medium)
-    options.medium = params.medium.split(',').map(s => s.trim()).filter(Boolean)
-  if (params.geoLocation)
-    options.geoLocation = params.geoLocation.split(',').map(s => s.trim()).filter(Boolean)
-  if (params.dateBegin && params.dateEnd) {
-    options.dateBegin = parseInt(params.dateBegin, 10)
-    options.dateEnd = parseInt(params.dateEnd, 10)
-  }
-
+  const options = paramsToSearchOptions(params)
   const result = await search(q, options)
   const objectIDs = result.objectIDs ?? []
   const cappedTotal = Math.min(objectIDs.length, MAX_PAGES * PAGE_SIZE)
@@ -63,7 +46,7 @@ export default async function Page({
 
   const settled = await Promise.allSettled(slice.map(id => fetchObject(id)))
   const artworks = settled
-    .filter(r => r.status === 'fulfilled')
+    .filter((r): r is PromiseFulfilledResult<MuseumObject> => r.status === 'fulfilled')
     .map(r => r.value)
 
   return (

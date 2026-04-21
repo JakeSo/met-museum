@@ -8,20 +8,20 @@ export type Constituent = {
 };
 
 type MuseumObjectMeasurement = {
-            elementName: string,
-            elementDescription: string,
-            elementMeasurements: {
-                Height: number,
-                Width: number
-            }
-        }
+  elementName: string
+  elementDescription: string
+  elementMeasurements: {
+    Height: number
+    Width: number
+  }
+}
 
 type MuseumObjectTag = {
-    term: string,
-    AAT_URL: string,
-    Wikidata_URL: string
+  term: string
+  AAT_URL: string
+  Wikidata_URL: string
 }
-        
+
 
 export type Department = {
   departmentId: number;

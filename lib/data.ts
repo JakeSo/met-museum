@@ -3,6 +3,13 @@ import { CollectionResult, Department, MuseumObject } from "./types";
 
 const MET_API = 'https://collectionapi.metmuseum.org/public/collection/v1'
 
+export class NotFoundError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'NotFoundError'
+  }
+}
+
 export type SearchOptions = {
   isHighlight?: boolean
   title?: boolean
@@ -49,6 +56,7 @@ export const search = async (
 export const fetchObject = unstable_cache(
   async (objectId: number): Promise<MuseumObject> => {
     const response = await fetch(`${MET_API}/objects/${objectId}`)
+    if (response.status === 404) throw new NotFoundError(`Object ${objectId} not found`)
     if (!response.ok) throw new Error(`Failed to fetch object ${objectId}: ${response.statusText}`)
     return response.json()
   },
