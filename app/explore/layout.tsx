@@ -7,7 +7,7 @@ export default function Layout({
 }>) {
 
     return (
-        <main>
+        <main id="main-content" className="p-12">
             {children}
         </main>
     )
