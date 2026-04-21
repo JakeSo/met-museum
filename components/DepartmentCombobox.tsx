@@ -1,5 +1,7 @@
+'use client'
 
-import { fetchDepartments } from "@/app/lib/data"
+import { useEffect, useState } from 'react'
+import { fetchDepartments } from '@/app/lib/data'
 import {
   Combobox,
   ComboboxChip,
@@ -10,36 +12,40 @@ import {
   ComboboxItem,
   ComboboxList,
   ComboboxValue,
-} from "@/components/ui/combobox"
+} from '@/components/ui/combobox'
 
 type Department = {
-    departmentId: number,
-    displayName: string
+  departmentId: number
+  displayName: string
 }
 
 type DepartmentComboboxProps = {
-    selectedDeptIds: number[],
-    setSelectedDeptIds: (value: number[]) => void
+  selectedDeptIds: number[]
+  setSelectedDeptIds: (value: number[]) => void
+  inputId?: string
 }
 
-export default async function DepartmentCombobox({selectedDeptIds, setSelectedDeptIds} : DepartmentComboboxProps) {
-    'use cache'
-    const departments = await fetchDepartments()
-    const handleValueChange = (value: Department[]) => {
-        const deptIds = value.map(item => item.departmentId)
-        setSelectedDeptIds(deptIds)
-    }
+export default function DepartmentCombobox({ selectedDeptIds, setSelectedDeptIds, inputId }: DepartmentComboboxProps) {
+  const [departments, setDepartments] = useState<Department[]>([])
 
-    return (
+  useEffect(() => {
+    fetchDepartments().then(setDepartments)
+  }, [])
+
+  const handleValueChange = (value: Department[]) => {
+    setSelectedDeptIds(value.map(d => d.departmentId))
+  }
+
+  return (
     <Combobox
       items={departments}
       multiple
-      value={departments.filter((item) => selectedDeptIds.includes(item.departmentId))}
+      value={departments.filter(d => selectedDeptIds.includes(d.departmentId))}
       onValueChange={handleValueChange}
     >
       <ComboboxChips>
-        <ComboboxValue>
-          {(values) => (
+        <ComboboxValue placeholder="Select departments...">
+          {(values: Department[]) => (
             <>
               {values.map((value: Department) => (
                 <ComboboxChip key={value.departmentId}>{value.displayName}</ComboboxChip>
@@ -48,7 +54,6 @@ export default async function DepartmentCombobox({selectedDeptIds, setSelectedDe
             </>
           )}
         </ComboboxValue>
-        <ComboboxChipsInput placeholder="Choose departments" />
       </ComboboxChips>
       <ComboboxContent>
         <ComboboxEmpty>No departments found.</ComboboxEmpty>
