@@ -4,17 +4,19 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-const HEIGHTS = [720, 960, 600, 840, 680, 1000, 560, 800]
+const HEIGHTS = [720, 960, 600, 840, 680, 1000, 560, 800];
 
 async function getMasonryItems(): Promise<MasonryItem[]> {
   const result = await search("*", { isHighlight: true, hasImages: true });
   const ids = (result.objectIDs ?? []).slice(0, 40);
-  const objects = await Promise.allSettled(ids.map(id => fetchObject(id)));
+  const objects = await Promise.allSettled(ids.map((id) => fetchObject(id)));
 
   return objects
     .filter(
-      (r): r is PromiseFulfilledResult<Awaited<ReturnType<typeof fetchObject>>> =>
-        r.status === "fulfilled" && !!r.value.primaryImageSmall
+      (
+        r,
+      ): r is PromiseFulfilledResult<Awaited<ReturnType<typeof fetchObject>>> =>
+        r.status === "fulfilled" && !!r.value.primaryImageSmall,
     )
     .map((r, i) => ({
       id: String(r.value.objectID),
@@ -36,10 +38,10 @@ export default async function Home() {
           <Link href="/explore">
             Explore <ArrowRight className="size-4" />
           </Link>
-        </Button>
+        </Button> 
       </div>
 
-      <div className="px-6 pb-12">
+      <div className="px-6 pb-12 min-h-[100vh]">
         <Masonry
           items={items}
           animateFrom="bottom"

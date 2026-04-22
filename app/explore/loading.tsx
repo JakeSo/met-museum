@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton } from "@/components/ui/skeleton";
 
 function CardSkeleton() {
   return (
@@ -12,7 +12,7 @@ function CardSkeleton() {
         <Skeleton className="h-8 w-full" />
       </div>
     </div>
-  )
+  );
 }
 
 export default function Loading() {
@@ -33,5 +33,5 @@ export default function Loading() {
         ))}
       </div>
     </div>
-  )
+  );
 }

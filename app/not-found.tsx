@@ -18,12 +18,15 @@ export default function NotFound() {
       <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-6">
         <Card className="max-w-md w-full text-center">
           <CardHeader>
-            <CardTitle className="text-6xl font-bold text-muted-foreground mb-4">404</CardTitle>
+            <CardTitle className="text-6xl font-bold text-muted-foreground mb-4">
+              404
+            </CardTitle>
             <CardTitle className="text-xl">Page Not Found</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
-              The artwork or page you&apos;re looking for doesn&apos;t exist in our collection.
+              The artwork or page you&apos;re looking for doesn&apos;t exist in
+              our collection.
             </p>
             <div className="flex gap-2 justify-center">
               <Button asChild variant="outline">

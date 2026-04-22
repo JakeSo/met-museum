@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,7 +25,9 @@ export default function Error({
       <div className="flex items-center justify-center min-h-[calc(100vh-120px)] px-6">
         <Card className="max-w-md w-full text-center">
           <CardHeader>
-            <CardTitle className="text-6xl font-bold text-muted-foreground mb-4">500</CardTitle>
+            <CardTitle className="text-6xl font-bold text-muted-foreground mb-4">
+              500
+            </CardTitle>
             <CardTitle className="text-xl">Something went wrong</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">

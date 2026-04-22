@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +17,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Met Collection Explorer",
-  description: "Search and explore the Met Museum's collection of over 470,000 artworks. Filter by artist, date, medium, and more to discover hidden gems and famous masterpieces alike.",
+  description:
+    "Search and explore the Met Museum's collection of over 470,000 artworks. Filter by artist, date, medium, and more to discover hidden gems and famous masterpieces alike.",
 };
 
 export default function RootLayout({
@@ -28,7 +29,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
+      className={cn(
+        "h-full",
+        "antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        "font-sans",
+        inter.variable,
+      )}
     >
       <body className="min-h-full flex flex-col">
         <a
