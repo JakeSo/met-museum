@@ -1,26 +1,48 @@
+"use client";
+
 import { fetchObject, NotFoundError } from "@/lib/data";
 import { MuseumObject } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { notFound } from "next/navigation";
+import { useState, useEffect } from "react";
 
-export default async function DetailsPage({
+export default function DetailsPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
-  let artwork: MuseumObject;
+  const [artwork, setArtwork] = useState<MuseumObject | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [id, setId] = useState<string | null>(null);
 
-  try {
-    artwork = await fetchObject(Number(id));
-  } catch (err) {
-    if (err instanceof NotFoundError) notFound();
-    throw err;
-  }
+  useEffect(() => {
+    params.then(({ id }) => setId(id));
+  }, [params]);
+
+  useEffect(() => {
+    if (!id) return;
+    fetchObject(Number(id))
+      .then(setArtwork)
+      .catch((err) => {
+        if (err instanceof NotFoundError) notFound();
+        throw err;
+      })
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading || !artwork) return null;
 
   const allImages = [
     artwork.primaryImage || artwork.primaryImageSmall,
@@ -56,10 +78,10 @@ export default async function DetailsPage({
         {/* Images */}
         {allImages.length > 0 && (
           <div className="space-y-4">
-            {allImages[0] && (
+            {allImages[selectedImageIndex] && (
               <div className="relative w-full overflow-hidden rounded-xl bg-muted">
                 <Image
-                  src={allImages[0]}
+                  src={allImages[selectedImageIndex]}
                   alt={artwork.title}
                   width={1200}
                   height={1200}
@@ -71,21 +93,36 @@ export default async function DetailsPage({
             )}
 
             {allImages.length > 1 && (
-              <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
-                {allImages.slice(1).map((src, i) => (
-                  <div
-                    key={i}
-                    className="relative aspect-square overflow-hidden rounded-lg bg-muted"
-                  >
-                    <Image
-                      src={src}
-                      alt={`${artwork.title} — view ${i + 2}`}
-                      fill
-                      sizes="(max-width: 640px) 33vw, 20vw"
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
+              <div className="relative">
+                <Carousel className="w-full">
+                  <CarouselContent>
+                    {allImages.map((src, i) => (
+                      <CarouselItem key={i} className="basis-1/4 sm:basis-1/5">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedImageIndex(i)}
+                          className={`block relative w-full aspect-square overflow-hidden rounded-lg bg-muted transition-all m-2 ${
+                            selectedImageIndex === i ? "ring-2 ring-foreground" : ""
+                          }`}
+                        >
+                          <Image
+                            src={src}
+                            alt={`${artwork.title} — view ${i + 1}`}
+                            fill
+                            sizes="96px"
+                            className="object-cover"
+                          />
+                        </button>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  {allImages.length > 5 && (
+                    <>
+                      <CarouselPrevious className="ms-8 p-3"/>
+                      <CarouselNext className="me-8 p-3"/>
+                    </>
+                  )}
+                </Carousel>
               </div>
             )}
           </div>
