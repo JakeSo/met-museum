@@ -33,7 +33,7 @@ export default function SearchBar() {
     filterFlags, setFilterFlags,
     medium, setMedium,
     geoLocation, setGeoLocation,
-    departmentIds, setDepartmentIds,
+    departmentId, setDepartmentId,
     dateBegin, setDateBegin,
     dateEnd, setDateEnd,
     showAdvanced, setShowAdvanced,
@@ -112,7 +112,7 @@ export default function SearchBar() {
             />
           </SearchField>
           <SearchField label="Department" htmlFor="search-department">
-            <DepartmentCombobox selectedDeptIds={departmentIds} setSelectedDeptIds={setDepartmentIds} />
+            <DepartmentCombobox selectedDeptId={departmentId} setSelectedDeptId={setDepartmentId} />
           </SearchField>
           <SearchField label="Date from" htmlFor="search-date-begin">
             <Input

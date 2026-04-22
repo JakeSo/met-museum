@@ -5,23 +5,21 @@ import { fetchDepartments } from '@/lib/data'
 import { type Department } from '@/lib/types'
 import {
   Combobox,
-  ComboboxChip,
-  ComboboxChips,
-  ComboboxChipsInput,
   ComboboxContent,
   ComboboxEmpty,
   ComboboxItem,
   ComboboxList,
+  ComboboxTrigger,
   ComboboxValue,
+  ComboboxInput
 } from '@/components/ui/combobox'
 
-
 type DepartmentComboboxProps = {
-  selectedDeptIds: number[]
-  setSelectedDeptIds: (value: number[]) => void
+  selectedDeptId: number | null
+  setSelectedDeptId: (value: number | null) => void
 }
 
-export default function DepartmentCombobox({ selectedDeptIds, setSelectedDeptIds }: DepartmentComboboxProps) {
+export default function DepartmentCombobox({ selectedDeptId, setSelectedDeptId }: DepartmentComboboxProps) {
   const [departments, setDepartments] = useState<Department[]>([])
 
   useEffect(() => {
@@ -30,34 +28,23 @@ export default function DepartmentCombobox({ selectedDeptIds, setSelectedDeptIds
       .catch(err => console.error('Failed to load departments:', err))
   }, [])
 
-  const handleValueChange = (value: Department[]) => {
-    setSelectedDeptIds(value.map(d => d.departmentId))
-  }
+  const selected = departments.find(d => d.departmentId === selectedDeptId) ?? null
 
   return (
     <Combobox
       items={departments}
-      multiple
-      value={departments.filter(d => selectedDeptIds.includes(d.departmentId))}
-      onValueChange={handleValueChange}
+      value={selected?.displayName ?? ''} 
+      onValueChange={value => {
+        const dept = departments.find(d => d.displayName === value)
+        setSelectedDeptId(dept ? dept.departmentId : null)
+      }}
     >
-      <ComboboxChips className="overflow-hidden">
-        <ComboboxValue placeholder="Select departments...">
-          {(values: Department[]) => (
-            <>
-              {values.map((value: Department) => (
-                <ComboboxChip key={value.departmentId}>{value.displayName}</ComboboxChip>
-              ))}
-              <ComboboxChipsInput />
-            </>
-          )}
-        </ComboboxValue>
-      </ComboboxChips>
+      <ComboboxInput placeholder='Select a department' showClear />
       <ComboboxContent>
         <ComboboxEmpty>No departments found.</ComboboxEmpty>
         <ComboboxList>
           {(item: Department) => (
-            <ComboboxItem key={item.departmentId} value={item}>
+            <ComboboxItem key={item.departmentId} value={item.displayName}>
               {item.displayName}
             </ComboboxItem>
           )}

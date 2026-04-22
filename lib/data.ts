@@ -11,10 +11,11 @@ export class NotFoundError extends Error {
 }
 
 export type SearchOptions = {
+  q?: string;
   isHighlight?: boolean
   title?: boolean
   tags?: boolean
-  departmentId?: number[]
+  departmentId?: number
   isOnView?: boolean
   artistOrCulture?: boolean
   medium?: string[]
@@ -36,7 +37,7 @@ export const search = async (
     if (isHighlight !== undefined) url.searchParams.set('isHighlight', String(isHighlight))
     if (title !== undefined) url.searchParams.set('title', String(title))
     if (tags !== undefined) url.searchParams.set('tags', String(tags))
-    if (departmentId?.length) url.searchParams.set('departmentIds', departmentId.join('|'))
+    if (departmentId !== undefined) url.searchParams.set('departmentId', String(departmentId))
     if (isOnView !== undefined) url.searchParams.set('isOnView', String(isOnView))
     if (artistOrCulture !== undefined) url.searchParams.set('artistOrCulture', String(artistOrCulture))
     if (medium?.length) url.searchParams.set('medium', String(medium.join('|')))

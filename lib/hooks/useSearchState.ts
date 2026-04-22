@@ -25,9 +25,11 @@ export function useSearchState() {
   })
   const [medium, setMedium] = useState(searchParams.get('medium') ?? '')
   const [geoLocation, setGeoLocation] = useState(searchParams.get('geoLocation') ?? '')
-  const [departmentIds, setDepartmentIds] = useState<number[]>(
-    searchParams.get('departmentId')?.split(',').map(Number).filter(Boolean) ?? []
-  )
+  const [departmentId, setDepartmentId] = useState<number | null>(() => {
+    const raw = searchParams.get('departmentId')
+    const id = raw ? parseInt(raw, 10) : NaN
+    return isNaN(id) ? null : id
+  })
   const [dateBegin, setDateBegin] = useState(searchParams.get('dateBegin') ?? '')
   const [dateEnd, setDateEnd] = useState(searchParams.get('dateEnd') ?? '')
   const [showAdvanced, setShowAdvanced] = useState(
@@ -42,7 +44,7 @@ export function useSearchState() {
     query ||
     Object.values(scope).some(Boolean) ||
     Object.values(filterFlags).some(Boolean) ||
-    medium || geoLocation || departmentIds.length || dateBegin || dateEnd
+    medium || geoLocation || departmentId !== null || dateBegin || dateEnd
   )
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -56,7 +58,7 @@ export function useSearchState() {
       hasImages:       filterFlags.hasImages,
       medium:       medium.trim() ? medium.split(',').map(s => s.trim()).filter(Boolean) : undefined,
       geoLocation:  geoLocation.trim() ? geoLocation.split(',').map(s => s.trim()).filter(Boolean) : undefined,
-      departmentId: departmentIds.length ? departmentIds : undefined,
+      departmentId: departmentId ?? undefined,
       dateBegin:    dateBegin && dateEnd ? parseInt(dateBegin, 10) : undefined,
       dateEnd:      dateBegin && dateEnd ? parseInt(dateEnd, 10) : undefined,
     }
@@ -69,7 +71,7 @@ export function useSearchState() {
     setFilterFlags({})
     setMedium('')
     setGeoLocation('')
-    setDepartmentIds([])
+    setDepartmentId(null)
     setDateBegin('')
     setDateEnd('')
     setShowAdvanced(false)
@@ -82,7 +84,7 @@ export function useSearchState() {
     filterFlags, setFilterFlags,
     medium, setMedium,
     geoLocation, setGeoLocation,
-    departmentIds, setDepartmentIds,
+    departmentId, setDepartmentId,
     dateBegin, setDateBegin,
     dateEnd, setDateEnd,
     showAdvanced, setShowAdvanced,

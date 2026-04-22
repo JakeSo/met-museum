@@ -8,8 +8,10 @@ export function paramsToSearchOptions(params: Record<string, string>): SearchOpt
   if (params.isOnView === 'true') options.isOnView = true
   if (params.artistOrCulture === 'true') options.artistOrCulture = true
   if (params.hasImages === 'true') options.hasImages = true
-  if (params.departmentId)
-    options.departmentId = params.departmentId.split(',').map(Number).filter(Boolean)
+  if (params.departmentId) {
+    const id = parseInt(params.departmentId, 10)
+    if (!isNaN(id)) options.departmentId = id
+  }
   if (params.medium)
     options.medium = params.medium.split(',').map(s => s.trim()).filter(Boolean)
   if (params.geoLocation)
@@ -18,20 +20,20 @@ export function paramsToSearchOptions(params: Record<string, string>): SearchOpt
     options.dateBegin = parseInt(params.dateBegin, 10)
     options.dateEnd = parseInt(params.dateEnd, 10)
   }
+  if (params.q) options.q = params.q.trim()
   return options
 }
 
 export function searchOptionsToParams(options: SearchOptions, query = ''): URLSearchParams {
   const params = new URLSearchParams()
-  if (query) params.set('q', query)
   if (options.isHighlight) params.set('isHighlight', 'true')
   if (options.title) params.set('title', 'true')
   if (options.tags) params.set('tags', 'true')
   if (options.isOnView) params.set('isOnView', 'true')
   if (options.artistOrCulture) params.set('artistOrCulture', 'true')
   if (options.hasImages) params.set('hasImages', 'true')
-  if (options.departmentId?.length)
-    params.set('departmentId', options.departmentId.join(','))
+  if (options.departmentId !== undefined)
+    params.set('departmentId', String(options.departmentId))
   if (options.medium?.length)
     params.set('medium', options.medium.join(','))
   if (options.geoLocation?.length)
@@ -40,5 +42,7 @@ export function searchOptionsToParams(options: SearchOptions, query = ''): URLSe
     params.set('dateBegin', String(options.dateBegin))
     params.set('dateEnd', String(options.dateEnd))
   }
+  if (query) params.set('q', query)
+
   return params
 }
