@@ -30,7 +30,6 @@ export const search = async (
   options?: SearchOptions,
 ): Promise<CollectionResult> => {
   const url = new URL(`${MET_API}/search`);
-  url.searchParams.set("q", q);
 
   if (options) {
     const {
@@ -67,6 +66,8 @@ export const search = async (
       url.searchParams.set("dateEnd", String(dateEnd));
     }
   }
+  url.searchParams.set("q", q);
+
 
   const response = await fetch(url.toString(), { next: { revalidate: 300 } });
   if (!response.ok) throw new Error(`Search failed: ${response.statusText}`);

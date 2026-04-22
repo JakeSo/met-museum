@@ -31,21 +31,7 @@ export default async function Page({
   const page = Math.max(1, parseInt(params.page ?? "1", 10));
 
   if (!q) {
-    const highlights = await search("*", {
-      isHighlight: true,
-      hasImages: true,
-    });
-    const highlightIDs = (highlights.objectIDs ?? []).slice(0, 40);
-    const settled = await Promise.allSettled(
-      highlightIDs.map((id) => fetchObject(id)),
-    );
-    const artworks = settled
-      .filter(
-        (r): r is PromiseFulfilledResult<MuseumObject> =>
-          r.status === "fulfilled" && !!r.value.primaryImageSmall,
-      )
-      .map((r) => r.value);
-
+    const artworks = await getHighlights();
     return (
       <div className="w-full space-y-6">
         <SearchBar />
@@ -88,3 +74,21 @@ export default async function Page({
     </div>
   );
 }
+
+async function getHighlights() {
+    const highlights = await search("*", {
+        isHighlight: true,
+        hasImages: true,
+    });
+    const highlightIDs = (highlights.objectIDs ?? []).slice(0, 40);
+    const settled = await Promise.allSettled(
+        highlightIDs.map((id) => fetchObject(id))
+    );
+    const artworks = settled
+        .filter(
+            (r): r is PromiseFulfilledResult<MuseumObject> => r.status === "fulfilled" && !!r.value.primaryImageSmall
+        )
+        .map((r) => r.value);
+    return artworks;
+}
+

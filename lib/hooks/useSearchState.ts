@@ -13,11 +13,7 @@ export function useSearchState() {
   const [isPending, startTransition] = useTransition()
 
   const [query, setQuery] = useState(searchParams.get('q') ?? '')
-  const [scope, setScope] = useState<BooleanFlags>({
-    title:           searchParams.get('title') === 'true',
-    tags:            searchParams.get('tags') === 'true',
-    artistOrCulture: searchParams.get('artistOrCulture') === 'true',
-  })
+  const [scope, setScope] = useState<'title' | 'tags' | 'artistOrCulture' | '' >('')
   const [filterFlags, setFilterFlags] = useState<BooleanFlags>({
     isHighlight: searchParams.get('isHighlight') === 'true',
     isOnView:    searchParams.get('isOnView') === 'true',
@@ -42,17 +38,16 @@ export function useSearchState() {
 
   const hasActiveFilters = Boolean(
     query ||
-    Object.values(scope).some(Boolean) ||
     Object.values(filterFlags).some(Boolean) ||
-    medium || geoLocation || departmentId !== null || dateBegin || dateEnd
+   scope || medium || geoLocation || departmentId !== null || dateBegin || dateEnd
   )
 
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     const options: SearchOptions = {
-      title:           scope.title,
-      tags:            scope.tags,
-      artistOrCulture: scope.artistOrCulture,
+      title:           scope === 'title',
+      tags:            scope === 'tags',
+      artistOrCulture: scope === 'artistOrCulture',
       isHighlight:     filterFlags.isHighlight,
       isOnView:        filterFlags.isOnView,
       hasImages:       filterFlags.hasImages,
@@ -67,7 +62,7 @@ export function useSearchState() {
 
   const clear = () => {
     setQuery('')
-    setScope({})
+    setScope('')
     setFilterFlags({})
     setMedium('')
     setGeoLocation('')

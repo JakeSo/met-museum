@@ -87,8 +87,8 @@ export default function SearchBar() {
           {SCOPE_CHIPS.map(({ key, label }) => (
             <SearchChip
               key={key}
-              active={!!scope[key]}
-              onClick={() => toggleFlag(scope, setScope, key)}
+              active={scope === key}
+              onClick={() => setScope(key as "title" | "tags" | "artistOrCulture")}
             >
               {label}
             </SearchChip>
@@ -165,7 +165,7 @@ export default function SearchBar() {
             <Input
               id="search-date-begin"
               type="number"
-              placeholder="e.g. −500"
+              placeholder="e.g. -500"
               value={dateBegin}
               onChange={(e) => setDateBegin(e.target.value)}
               className="h-8"
