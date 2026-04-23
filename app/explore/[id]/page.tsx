@@ -12,7 +12,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { notFound } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -26,6 +26,8 @@ export default function DetailsPage({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [id, setId] = useState<string | null>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     params.then(({ id }) => setId(id));
@@ -67,11 +69,14 @@ export default function DetailsPage({
 
   return (
     <div className="w-full space-y-10 pb-16">
-      <Button asChild variant="ghost" size="sm" className="-ml-2">
-        <Link href="/explore">
-          <ArrowLeft className="size-4" />
-          Back to Explore
-        </Link>
+      <Button
+        onClick={() => router.back()}
+        variant="ghost"
+        size="sm"
+        className="-ml-2"
+      >
+        <ArrowLeft className="size-4" />
+        Back to Explore
       </Button>
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_380px]">
@@ -102,7 +107,9 @@ export default function DetailsPage({
                           type="button"
                           onClick={() => setSelectedImageIndex(i)}
                           className={`block relative w-full aspect-square overflow-hidden rounded-lg bg-muted transition-all m-2 ${
-                            selectedImageIndex === i ? "ring-2 ring-foreground" : ""
+                            selectedImageIndex === i
+                              ? "ring-2 ring-foreground"
+                              : ""
                           }`}
                         >
                           <Image
@@ -118,8 +125,8 @@ export default function DetailsPage({
                   </CarouselContent>
                   {allImages.length > 5 && (
                     <>
-                      <CarouselPrevious className="ms-8 p-3"/>
-                      <CarouselNext className="me-8 p-3"/>
+                      <CarouselPrevious className="ms-8 p-3" />
+                      <CarouselNext className="me-8 p-3" />
                     </>
                   )}
                 </Carousel>

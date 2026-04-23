@@ -53,7 +53,7 @@ export default async function Home() {
       </div>
 
       <div className="flex flex-col items-center gap-4 py-16">
-        <p className="text-3xl font-medium">470,000+ works in the collection</p>
+        <p className="text-3xl font-medium text-center">470,000+ works in the collection</p>
         <Button asChild size="lg">
           <Link href="/explore">
             Search the full collection <ArrowRight className="size-4" />
